@@ -1,0 +1,11 @@
+body {
+  padding-top: 50px;
+}
+.page-header {
+  text-align: center;
+}
+#zak-img{
+	align:left;
+	display:inline;
+	padding: 5px;
+}
