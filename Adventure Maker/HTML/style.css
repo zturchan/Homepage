@@ -1,0 +1,60 @@
+body {
+  padding-top: 50px;
+  background-color: black;
+  font-size:14px;
+  padding-bottom: 50px;
+}
+.module {
+	background-color: white;
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
+.container{
+	max-width: 730px;
+}
+#header-map{
+	font-size: 20px;
+	text-align: center;
+}
+.header-prompt{
+	font-size: 20px;
+	text-align: center;
+}
+#title-input{
+	width: 100%;
+}
+#body-input{
+	width: 100%;
+	max-width: 100%;
+	height: 200px;
+}
+#path-input{
+
+}
+#done{
+	display: inline;
+ 	margin-left: 25%;
+	width: 50%
+}
+#story-body{
+	display:none;
+}
+#header-container {
+	text-align: center;
+}
+
+.glyphicon-plus {
+	color: green;
+	cursor:pointer;
+}
+th {
+	min-width: 80px;
+}
+.centered {
+	text-align: center;
+}
+.link-title {
+	color: blue;
+	text-decoration: underline;
+	cursor:pointer;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="shortcut icon" href="../docs-assets/ico/favicon.png">-->
+
+    <title>Adventure Maker</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../dist/css/bootstrap.css" rel="stylesheet">
+	<link href="sticky-footer.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+  </head>
+
+  <body>
+	<!-- Confirmation Modal -->
+	<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="confirm-modalLabel">Are You Sure?</h4>
+		  </div>
+		  <div class="modal-body">
+			Creating a new story will erase any unsaved changes to the current story.  Are you sure you want to create a new story?
+		  </div>
+		  <div class="modal-footer">
+		  	<button type="button" class="btn btn-primary" id="create-new" data-dismiss="modal">Yes</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+  
+	<!-- Instructions Modal -->
+	<div class="modal fade" id="instruction-modal" tabindex="-1" role="dialog" aria-labelledby="instruction-modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="instruction-modalLabel">Adventure Maker Instructions</h4>
+		  </div>
+		  <div class="modal-body">
+		  <strong>What is Adventure Maker?</strong><br />
+			Adventure Maker is a tool for creating 'Choose Your Own Adventure'-style interactive stories/games, which can then be saved to your local disk as a series of HTML pages which can be viewed in any browser.  In order to use the latest version of some source files we reference Content-Distribution-Networks, which require an internet connection.  If you need to use Adventure Maker locally, download any of the script files referenced in index.html and change the references to your local copies.<br />  <br />
+		  <strong>What do I need to use Adventure Maker?</strong><br />
+			Currently we support Chrome 31 or higher.  Adventure maker uses HTML5 features which are not present in several other browser, but as browser implement more of the <a href="http://www.w3.org/TR/html5/">HTML5 Spec</a> they will support Adventure Maker as well.  Other browsers may support Adventure Maker right now but we make no guarantees.  <br /><br />
+		  <strong>How do I use Adventure Maker?</strong><br />
+			There are 2 concepts Adventure Maker uses when making stories: <strong>Nodes</strong> and <strong>Links</strong>.  Nodes are akin to the pages in a book: each one will have a title, an id (think of it as a page number, these start at 0), a body (the text that the reader of your story will read), and several Links to other nodes.  Ideally, at the end of your story text in a node, the reader will be presented with some sort of choice.  The options left to the reader will be displayed as buttons which when clicked will move the user to a new node.  If you want to go for a more text-based adventure style game you can have very small nodes with links back to where you came from.  <br /> <br />
+			When you first launch Adventure Maker, you will be editing the first node of your story.  There are 2 ways of adding links.  The first one is to create a new link to a brand new node that you will write in the future.  To do this, type the label for the link into the text box and click "New Link".  This will create a new untitled link in the story map below.  The other way is to link to a node that you've already written.  In this case, find the node that you want to link to in the story map and click the green plus.  You will be prompted for the label name for that link and it will be added to the node you're currently editing.<br/><br/>
+			If you want to create a new node but not link to it (say you don't know what links you're going to want, or you want to write the ending before you're done), then click "Create New Story Node".  This will append a new node to the story and save the current one. <br/><br/>
+			<strong>How do I save my story?</strong><br/>
+			When you're done, click the "Export" button at the top of the screen.  This will download a large number of files to your hard drive, so you'll want to consider your browser settings before you do this.  You'll want to make sure that web sites are allowed to download multiple files, and you'll probably want to create a new folder and set that as your default download folder so that your Downloads folder does not get cluttered with story files.  <br/><br/>
+			The following files will be downloaded when you export your story:<br/>
+			-style.css (This is the file that makes your story nodes look nice)<br/>
+			-0.html, 1.html, etc (These are files for each story node, so be patient when downloading.  The filenames correspond to their node ID, so 0.html is where your reader will want to start.)<br/>
+			-story.json (This is a file that contains all the information about your story in 1 file.  If you want to load your story back up and continue working on it, you can load just this file and continue where you left off.)<br />
+			
+			
+			
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+  
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Adventure Maker</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#" data-toggle="modal" data-target="#confirm-modal">Create New</a></li>
+            <li><a href="#" id="export">Export</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#instruction-modal">Instructions</a></li>
+			<li><a href="#" id="load">Load From Disk</a></li>
+<!-- 			<li><a><input class = "btn btn-default" type="file" id="files"/></a><!-- <output id="list"></output> </li> -->
+			
+			
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+<input type="file" id="fileElem" multiple="" onchange="handleFiles(this.files)" style="visibility: hidden;">
+
+    <div class="container module">
+		<div id="edit-node">
+			 <div id="header-container"><span class="header-prompt">Editing Story Node </span><span id="curNode" class = "header-prompt">0</span></div><br>
+			 <span style="display: block;"><input id="title-input" type="text" class="form-control" placeholder="Title"></input></span><br>
+			 <span style="display: block;"><textarea id="body-input" class="form-control" placeholder="Text Body"></textarea></span>
+			 <p>			 
+				<div class="input-group">
+				  <input type="text" class="form-control" id="path-name" placeholder="Option Name">
+					<div class="input-group-btn dropdown">
+					<button class="btn btn-primary" type="button" id="add-path" tabindex="-1" >New Link</button>
+					</div>
+					
+					
+				</div><!-- /input-group -->
+				
+			</p>
+			 
+			 <p><div class="btn-toolbar" id="new-paths" role="toolbar">
+			 </div></p>
+			 
+			<div style="width:100%"><button class="btn btn-default" type="button" id="done">Create New Story Node</button></div>
+
+		</div>
+		<br/>
+		<div id="map">
+		<div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading centered">Story Map</div>
+		
+		  <!-- Table -->
+		  <table class="table">
+			<thead>
+				<tr>
+					<th class="centered">Node ID</th>
+					<th class="centered">Title</th>
+					<th class="centered">Add Link</th>
+				</tr>
+			</thead>
+			<tbody id="nodes-list">
+			</tbody>
+		  </table>
+		  </div>
+		</div>
+    </div><!-- /.container module -->
+	
+	<div id="story-body">
+	
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+	<script src="../JS/jquery.js"></script>
+    <script src="../dist/js/bootstrap.min.js"></script>
+	<script src="../JS/FileSaver.js"></script>
+	<script src="../JS/maker.js"></script>
+	<script>
+	function click(el) {
+	  // Simulate click on the element.
+	  var evt = document.createEvent('Event');
+	  evt.initEvent('click', true, true);
+	  el.dispatchEvent(evt);
+	}
+
+	document.querySelector('#load').addEventListener('click', function(e) {
+	  var fileInput = document.querySelector('#fileElem');
+	  click(fileInput); // Simulate the click with a custom event.
+	  //fileInput.click(); // Or, use the native click() of the file input.
+	}, false);
+
+	function handleFiles(files) {
+	  var file = files[0];
+	  var reader = new FileReader();
+	  
+	  // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+			nodes = eval(e.target.result);
+			drawNodes();
+			curNode = 1;
+			newPaths = 1;
+			$("#curNode").html(curNode);
+        };
+      })(file);
+	  
+	  reader.readAsText(file);
+	}
+	</script>
+  </body>
+</html>
